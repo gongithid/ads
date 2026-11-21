@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>World Health Organization</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #f4f6f9;
+    }
+    .card {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 320px;
+      text-align: center;
+    }
+    .code-box {
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 6px;
+      background: #eef1f5;
+      padding: 12px;
+      margin: 16px 0;
+      border-radius: 4px;
+      user-select: none;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px 14px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .verify-btn {
+      width: 100%;
+      background: #0066cc;
+      color: #fff;
+      font-weight: bold;
+    }
+    .refresh-btn {
+      background: #e2e6ea;
+      color: #333;
+      margin-bottom: 12px;
+    }
+    #status {
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Verify You Are A Person</h2>
+    <p>Enter the code shown below:</p>
+    <div id="code" class="code-box"></div>
+    <button type="button" class="refresh-btn" onclick="generateCode()">New Code</button>
+    <form onsubmit="verifyCode(event)">
+      <input type="text" id="userInput" placeholder="Type code here" required autocomplete="off" />
+      <button type="submit" class="verify-btn">Verify</button>
+    </form>
+    <div id="status"></div>
+  </div>
+
+  <script>
+    let currentCode = "";
+
+    function generateCode() {
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      let code = "";
+      for (let i = 0; i < 6; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      currentCode = code;
+      document.getElementById("code").textContent = currentCode;
+      document.getElementById("status").textContent = "";
+      document.getElementById("userInput").value = "";
+    }
+
+    function verifyCode(event) {
+      event.preventDefault();
+      const input = document.getElementById("userInput").value.trim().toUpperCase();
+      const statusEl = document.getElementById("status");
+
+      if (input === currentCode) {
+        statusEl.style.color = "green";
+        statusEl.textContent = "Verification passed.";
+      } else {
+        statusEl.style.color = "crimson";
+        statusEl.textContent = "Incorrect code. Try again.";
+        generateCode();
+      }
+    }
+
+    generateCode();
+  </script>
+</body>
+</html>
